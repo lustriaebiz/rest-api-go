@@ -10,6 +10,7 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"strconv"
 )
 
 func main() {
@@ -30,6 +31,7 @@ func main() {
 	http.HandleFunc("/merchant", GetMerchant)
 	http.HandleFunc("/merchant/create", PostMerchant)
 	http.HandleFunc("/merchant/update", UpdateMerchant)
+	http.HandleFunc("/merchant/delete", DeleteMerchant)
 
 	err := http.ListenAndServe(":2400", nil)
 
@@ -125,6 +127,45 @@ func UpdateMerchant(w http.ResponseWriter, r *http.Request) {
 		}
 
 		utils.ResponseJSON(w, res, http.StatusCreated)
+		return
+	}
+
+	http.Error(w, "Tidak di ijinkan", http.StatusMethodNotAllowed)
+	return
+}
+
+func DeleteMerchant(w http.ResponseWriter, r *http.Request) {
+
+	if r.Method == "DELETE" {
+
+		ctx, cancel := context.WithCancel(context.Background())
+		defer cancel()
+
+		var merchants models.Merchant
+
+		id := r.URL.Query().Get("id")
+
+		if id == "" {
+			utils.ResponseJSON(w, "id tidak boleh kosong", http.StatusBadRequest)
+			return
+		}
+		merchants.ID, _ = strconv.Atoi(id)
+
+		if err := merchant.Delete(ctx, merchants); err != nil {
+
+			kesalahan := map[string]string{
+				"error": fmt.Sprintf("%v", err),
+			}
+
+			utils.ResponseJSON(w, kesalahan, http.StatusInternalServerError)
+			return
+		}
+
+		res := map[string]string{
+			"status": "Succesfully",
+		}
+
+		utils.ResponseJSON(w, res, http.StatusOK)
 		return
 	}
 

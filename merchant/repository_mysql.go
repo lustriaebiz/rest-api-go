@@ -2,6 +2,8 @@ package merchant
 
 import (
 	"context"
+	"database/sql"
+	"errors"
 	"fmt"
 	"log"
 	"time"
@@ -107,6 +109,31 @@ func Update(ctx context.Context, merchants models.Merchant) error {
 
 	if err != nil {
 		return err
+	}
+
+	return nil
+}
+
+func Delete(ctx context.Context, merchants models.Merchant) error {
+
+	db, err := config.MySQL()
+
+	if err != nil {
+		log.Fatal("Can't connect to MySQL", err)
+	}
+
+	queryText := fmt.Sprintf("DELETE FROM %v where id = '%d'", table, merchants.ID)
+
+	s, err := db.ExecContext(ctx, queryText)
+
+	if err != nil && err != sql.ErrNoRows {
+		return err
+	}
+
+	check, err := s.RowsAffected()
+	fmt.Println(check)
+	if check == 0 {
+		return errors.New("data not found.")
 	}
 
 	return nil

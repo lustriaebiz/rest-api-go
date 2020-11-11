@@ -13,6 +13,14 @@ import (
 	"strconv"
 )
 
+func Log(next http.Handler) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		fmt.Println("middleware..\n")
+		fmt.Println(r.URL.Path)
+		next.ServeHTTP(w, r)
+	})
+}
+
 func main() {
 
 	db, e := config.MySQL()
@@ -28,7 +36,7 @@ func main() {
 
 	fmt.Println("Success")
 
-	http.HandleFunc("/merchant", GetMerchant)
+	http.Handle("/merchant", Log(http.HandlerFunc(GetMerchant)))
 	http.HandleFunc("/merchant/create", PostMerchant)
 	http.HandleFunc("/merchant/update", UpdateMerchant)
 	http.HandleFunc("/merchant/delete", DeleteMerchant)

@@ -64,3 +64,24 @@ func GetAll(ctx context.Context) ([]models.Merchant, error) {
 
 	return merchants, nil
 }
+
+func Insert(ctx context.Context, merchants models.Merchant) error {
+	db, err := config.MySQL()
+
+	if err != nil {
+		log.Fatal("Can't connect to MySQL", err)
+	}
+
+	queryText := fmt.Sprintf("INSERT INTO %v (name, telp, created_at, updated_at) values('%v','%v','%v','%v')", table,
+		merchants.Name,
+		merchants.Telp,
+		time.Now().Format(layoutDateTime),
+		time.Now().Format(layoutDateTime))
+
+	_, err = db.ExecContext(ctx, queryText)
+
+	if err != nil {
+		return err
+	}
+	return nil
+}

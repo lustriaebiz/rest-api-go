@@ -1,7 +1,31 @@
 package main
 
-import "fmt"
+import (
+	"api-new/config"
+	"fmt"
+	"log"
+	"net/http"
+)
 
 func main() {
-	fmt.Println("haloo")
+
+	db, e := config.MySQL()
+
+	if e != nil {
+		log.Fatal(e)
+	}
+
+	eb := db.Ping()
+	if eb != nil {
+		panic(eb.Error())
+	}
+
+	fmt.Println("Success")
+
+	err := http.ListenAndServe(":2400", nil)
+
+	if err != nil {
+		log.Fatal(err)
+	}
+
 }

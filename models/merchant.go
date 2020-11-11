@@ -6,7 +6,7 @@ import (
 
 type (
 	Merchant struct {
-		MID       int       `json:"id"`
+		ID        int       `json:"id"`
 		Name      string    `name:"name"`
 		Telp      string    `json:"telp"`
 		CreatedAt time.Time `json:"created_at"`

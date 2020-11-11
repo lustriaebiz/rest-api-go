@@ -10,7 +10,7 @@ import (
 const (
 	username string = "root"
 	password string = ""
-	database string = "merchant-go"
+	database string = "merchant_go"
 )
 
 var (

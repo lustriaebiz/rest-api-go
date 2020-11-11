@@ -29,6 +29,7 @@ func main() {
 
 	http.HandleFunc("/merchant", GetMerchant)
 	http.HandleFunc("/merchant/create", PostMerchant)
+	http.HandleFunc("/merchant/update", UpdateMerchant)
 
 	err := http.ListenAndServe(":2400", nil)
 
@@ -78,6 +79,43 @@ func PostMerchant(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 		if err := merchant.Insert(ctx, merchants); err != nil {
+			utils.ResponseJSON(w, err, http.StatusInternalServerError)
+			return
+		}
+
+		res := map[string]string{
+			"status": "Succesfully",
+		}
+
+		utils.ResponseJSON(w, res, http.StatusCreated)
+		return
+	}
+
+	http.Error(w, "Tidak di ijinkan", http.StatusMethodNotAllowed)
+	return
+}
+
+func UpdateMerchant(w http.ResponseWriter, r *http.Request) {
+	if r.Method == "PUT" {
+
+		if r.Header.Get("Content-Type") != "application/json" {
+			http.Error(w, "Gunakan content type application / json", http.StatusBadRequest)
+			return
+		}
+
+		ctx, cancel := context.WithCancel(context.Background())
+		defer cancel()
+
+		var merchants models.Merchant
+
+		if err := json.NewDecoder(r.Body).Decode(&merchants); err != nil {
+			utils.ResponseJSON(w, err, http.StatusBadRequest)
+			return
+		}
+
+		fmt.Println(merchants)
+
+		if err := merchant.Update(ctx, merchants); err != nil {
 			utils.ResponseJSON(w, err, http.StatusInternalServerError)
 			return
 		}

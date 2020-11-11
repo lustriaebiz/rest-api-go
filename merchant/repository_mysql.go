@@ -85,3 +85,29 @@ func Insert(ctx context.Context, merchants models.Merchant) error {
 	}
 	return nil
 }
+
+func Update(ctx context.Context, merchants models.Merchant) error {
+
+	db, err := config.MySQL()
+
+	if err != nil {
+		log.Fatal("Can't connect to MySQL", err)
+	}
+
+	queryText := fmt.Sprintf("UPDATE %v set name ='%s', telp = '%s', updated_at = '%v' where id = '%d'",
+		table,
+		merchants.Name,
+		merchants.Telp,
+		time.Now().Format(layoutDateTime),
+		merchants.ID,
+	)
+	fmt.Println(queryText)
+
+	_, err = db.ExecContext(ctx, queryText)
+
+	if err != nil {
+		return err
+	}
+
+	return nil
+}

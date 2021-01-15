@@ -1,0 +1,130 @@
+{
+	"info": {
+		"_postman_id": "2d2d9e8a-4a89-4e55-bc13-a541651004b8",
+		"name": "GOLANG",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "GET MERCHANT",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{host}}/merchant",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"merchant"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "INSERT MERCHANT",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"Ebiz\",\r\n    \"telp\": \"02742011\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{host}}/merchant/create",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"merchant",
+						"create"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "UPDATE MERCHANT",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"Ebiz\",\r\n    \"telp\": \"082142188883\",\r\n    \"id\": 4\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{host}}/merchant/update",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"merchant",
+						"update"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "DELETE MERCHANT",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{host}}/merchant/delete?id=4",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"merchant",
+						"delete"
+					],
+					"query": [
+						{
+							"key": "id",
+							"value": "4"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GO Run Time",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{host}}/goruntime",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"goruntime"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
